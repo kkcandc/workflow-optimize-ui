@@ -58,6 +58,6 @@ Presets include xAI Grok, OpenAI, Groq, and OpenRouter. Change the model name if
 
 ## Deploy
 
-The Vercel project belongs to Kenny Kline’s personal account (hobby team “Kenny Kline's projects”), and the GitHub repo stays `kkcandc/workflow-optimize-ui`. Framework is Vite. `api/analyze.ts` is the model route. Static files come from `dist/`.
+The Vercel project belongs to Kenny Kline’s personal account (hobby team “Kenny Kline's projects”), and the GitHub repo stays `kkcandc/workflow-optimize-ui`. Framework is Vite. The model route is bundled from `server/analyze.ts` into `api/analyze.js` during the build. Static files come from `dist/`.
 
 Production: https://workflow-optimize-ui.vercel.app

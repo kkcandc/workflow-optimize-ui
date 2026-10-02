@@ -12,5 +12,5 @@
     "noUnusedParameters": true,
     "types": ["node"]
   },
-  "include": ["api", "src/score.ts", "src/types.ts", "src/prompt.ts", "src/llm.ts"]
+  "include": ["server", "scripts", "src/score.ts", "src/types.ts", "src/prompt.ts", "src/llm.ts"]
 }

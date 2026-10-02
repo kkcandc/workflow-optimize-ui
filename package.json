@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && tsc -p tsconfig.api.json && vite build",
+    "build": "tsc -b && tsc -p tsconfig.api.json && vite build && tsx scripts/bundle-api.ts",
     "preview": "vite preview",
     "test": "tsx --test src/*.test.ts",
     "typecheck": "tsc -b && tsc -p tsconfig.api.json"
