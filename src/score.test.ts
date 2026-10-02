@@ -43,7 +43,10 @@ describe("scoreTranscript", () => {
     assert.equal(analysis.opportunities[3].mode, "optimize");
     assert.equal(analysis.opportunities[3].timeSavedHoursPerWeek, 0.8);
     assert.equal(analysis.hoursPerWeek, 8.7);
-    assert.ok(analysis.guardrails.some((line) => /never auto-publish/i.test(line)));
+    assert.deepEqual(analysis.guardrails, [
+      "Kenny reviews every consumer send himself. Never auto-publish.",
+      "I always review the copy myself before it sends.",
+    ]);
     assert.equal(analysis.opportunities[0].rank, 1);
     assert.ok(analysis.opportunities[0].score > analysis.opportunities[1].score);
   });

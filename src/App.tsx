@@ -408,11 +408,11 @@ function Results({
         </p>
       )}
 
-      {analysis.memories.length > 0 ? (
+      {extraMemories(analysis).length > 0 ? (
         <section className="memories">
           <h3>Memories read</h3>
           <ul>
-            {analysis.memories.map((memory) => (
+            {extraMemories(analysis).map((memory) => (
               <li key={memory}>{memory}</li>
             ))}
           </ul>
@@ -449,6 +449,15 @@ function EmptyState({ onSample }: { onSample: () => void }) {
         Review the sample desk
       </button>
     </section>
+  );
+}
+
+function extraMemories(analysis: Analysis): string[] {
+  return analysis.memories.filter(
+    (memory) =>
+      !analysis.guardrails.some(
+        (guardrail) => guardrail.includes(memory) || memory.includes(guardrail),
+      ),
   );
 }
 

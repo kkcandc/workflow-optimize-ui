@@ -67,6 +67,22 @@ function stripKey(text: string, apiKey: string): string {
   return apiKey ? text.split(apiKey).join("[key]") : text;
 }
 
+export function formatProviderError(status: number, raw: string, apiKey: string): string {
+  const clean = stripKey(raw, apiKey).trim();
+  try {
+    const parsed = JSON.parse(clean) as {
+      error?: { message?: string } | string;
+      message?: string;
+    };
+    const message =
+      typeof parsed.error === "string" ? parsed.error : parsed.error?.message || parsed.message;
+    if (message) return `Provider returned ${status}. ${message}`;
+  } catch {
+    /* The body was not JSON. */
+  }
+  return `Provider returned ${status}. ${clean.slice(0, 180)}`;
+}
+
 function messageText(content: unknown): string {
   if (typeof content === "string") return content;
   if (!Array.isArray(content)) return "";
@@ -154,12 +170,15 @@ async function complete(
   });
 
   const raw = await response.text();
-  if (response.status === 400 && jsonMode) {
+  if (
+    response.status === 400 &&
+    jsonMode &&
+    /response_format|json_object|response format/i.test(raw)
+  ) {
     return complete(url, request, false);
   }
   if (!response.ok) {
-    const detail = stripKey(raw, request.apiKey).slice(0, 280);
-    throw new Error(`Provider returned ${response.status}. ${detail}`.trim());
+    throw new Error(formatProviderError(response.status, raw, request.apiKey));
   }
 
   let parsed: unknown;

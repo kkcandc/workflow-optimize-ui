@@ -289,19 +289,32 @@ function collectMemories(blocks: Block[], transcript: string): string[] {
   return [...lines].slice(0, 8);
 }
 
+const GUARDRAIL =
+  /never auto-publish|reviews every|review the copy|review myself|before it sends|before anything sends|do not auto/i;
+
+function pushGuardrail(guard: string[], line: string): void {
+  const clean = line.replace(/^memory:\s*/i, "").replace(/\s+/g, " ").trim();
+  if (!clean || !GUARDRAIL.test(clean)) return;
+  const key = clean.toLowerCase();
+  const existing = guard.findIndex((item) => {
+    const other = item.toLowerCase();
+    return other === key || other.includes(key) || key.includes(other);
+  });
+  if (existing === -1) {
+    guard.push(clean);
+    return;
+  }
+  if (clean.length > guard[existing].length) guard[existing] = clean;
+}
+
 function collectGuardrails(memories: string[], blocks: Block[]): string[] {
   const guard: string[] = [];
-  const pattern =
-    /never auto-publish|reviews every|review the copy|review myself|before it sends|before anything sends|do not auto/i;
-  for (const memory of memories) {
-    if (pattern.test(memory)) guard.push(memory);
-  }
+  for (const memory of memories) pushGuardrail(guard, memory);
   for (const block of blocks) {
-    for (const sentence of sentences(block.text)) {
-      if (pattern.test(sentence) && !guard.includes(sentence)) guard.push(sentence);
-    }
+    if (block.source === "memory") continue;
+    for (const sentence of sentences(block.text)) pushGuardrail(guard, sentence);
   }
-  return guard.slice(0, 6);
+  return guard.slice(0, 4);
 }
 
 export function resolveMode(mode: Mode, text: string, guardrails: string[]): Mode {
