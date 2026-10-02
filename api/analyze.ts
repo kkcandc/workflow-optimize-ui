@@ -1,4 +1,4 @@
-import { runLlmAnalysis } from "../src/llm.ts";
+import { runLlmAnalysis } from "../src/llm";
 
 type NodeRequest = {
   method?: string;

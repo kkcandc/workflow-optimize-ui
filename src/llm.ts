@@ -1,6 +1,6 @@
-import { SHARED_PROMPT } from "./prompt.ts";
-import { analysisFromModel } from "./score.ts";
-import type { Analysis } from "./types.ts";
+import { SHARED_PROMPT } from "./prompt";
+import { analysisFromModel } from "./score";
+import type { Analysis } from "./types";
 
 const ALLOWED_HOSTS = new Set([
   "api.openai.com",

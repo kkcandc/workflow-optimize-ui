@@ -4,12 +4,12 @@ import type {
   Mode,
   Opportunity,
   Source,
-} from "./types.ts";
+} from "./types";
 import {
   EFFORT_SETUP_HOURS,
   EFFORT_WEIGHT,
   SOURCES,
-} from "./types.ts";
+} from "./types";
 
 type Block = {
   source: Source;
